@@ -43,6 +43,7 @@ class utility_hud():
         self.utilities[0] = utility_tile("New",10,15,25)
         self.utilities[1] = utility_tile("Load",10,35,25)
         self.utilities[2] = utility_tile("Save",10,55,25)
+        self.utilities[3] = utility_tile("Config",10,75,25)
 
     def draw(self,win):
         win.blit(self.image,self.rect)
