@@ -37,6 +37,7 @@ class screen():
         self.scroll_x = 0
         self.scroll_y = 0
         self.layer = 1
+        self.save_data_path = None
 
     # display function 
     def draw(self,win:pygame.Surface):
@@ -53,7 +54,7 @@ class screen():
         self.image.blit(pygame.font.SysFont("comicon",20).render(f"X-offset : {self.scroll_x}, Y-offset : {self.scroll_y}, Layer : {self.layer}",True,(30,30,30)),(10,10))
 
     # sprite input function
-    def get_sprite(self,pos_x:int,pos_y:int,surf_path:str|bytes):
+    def get_sprite(self,pos_x:int,pos_y:int,surf_path:str|bytes,current_dir_path:str|bytes):
         pos_x -= self.scroll_x
         pos_y -= self.scroll_y
         k_x,k_y = pos_x//self.sprite_size,pos_y//self.sprite_size
@@ -68,14 +69,14 @@ class screen():
                 self.return_sprite_list[self.layer][str(k_y)][str(k_x)] = surf_path
                 return
             self.sprites[self.layer][k_y][k_x] = sprite_tile((pos_x-pos_x%self.sprite_size),(pos_y-pos_y%self.sprite_size),self.sprite_size,surf_path)
-            self.return_sprite_list[self.layer][str(k_y)][str(k_x)] = surf_path
+            self.return_sprite_list[self.layer][str(k_y)][str(k_x)] = surf_path.replace(current_dir_path+'/',"")
         else:
             if surf_path == 'p' or surf_path == 'e':
                 self.sprites[self.layer][k_y] = {k_x:character_sprite((pos_x-pos_x%self.sprite_size),(pos_y-pos_y%self.sprite_size),self.sprite_size,surf_path)}
                 self.return_sprite_list[self.layer][str(k_y)] = {str(k_x):surf_path}
                 return
             self.sprites[self.layer][k_y] = {k_x:sprite_tile((pos_x-pos_x%self.sprite_size),(pos_y-pos_y%self.sprite_size),self.sprite_size,surf_path)}
-            self.return_sprite_list[self.layer][str(k_y)] = {str(k_x):surf_path}
+            self.return_sprite_list[self.layer][str(k_y)] = {str(k_x):surf_path.replace(current_dir_path+'/',"")}
 
     # Sprite loading to main sprite dict funtion
     def load_sprites(self):
@@ -87,7 +88,7 @@ class screen():
                     if val_2 == 'p' or val_2 == 'e':
                         self.sprites[int(lyr)][int(y)][int(x)] = character_sprite(int(x)*self.sprite_size,int(y)*self.sprite_size,self.sprite_size,val_2)
                     else:
-                        self.sprites[int(lyr)][int(y)][int(x)] = sprite_tile(int(x)*self.sprite_size,int(y)*self.sprite_size,self.sprite_size,val_2) 
+                        self.sprites[int(lyr)][int(y)][int(x)] = sprite_tile(int(x)*self.sprite_size,int(y)*self.sprite_size,self.sprite_size,self.save_data_path+val_2)
 
     # Sprite deletion function
     def delete_sprite(self,pos_x:int,pos_y:int):

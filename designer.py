@@ -70,6 +70,7 @@ while not run:
                         path = fd.askopenfilename(filetypes=[('pickle file','.pkl')])
                         if path:
                             tile_screen.reset()
+                            tile_screen.save_data_path = path.strip(path.split('/')[-1])
                             with open(path,'rb') as fp:
                                 tile_screen.return_sprite_list = pk.load(fp)
                             tile_screen.load_sprites()
@@ -91,13 +92,13 @@ while not run:
     if tile_screen.rect.collidepoint(Mouse):
         if dir_display.return_path and pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed()[0]:
             m_pos_x,m_pos_y = pygame.mouse.get_pos()
-            tile_screen.get_sprite(m_pos_x,m_pos_y,dir_display.return_path)
+            tile_screen.get_sprite(m_pos_x,m_pos_y,dir_display.return_path,dir_display.path)
         elif pygame.key.get_mods() & pygame.KMOD_LSHIFT and pygame.mouse.get_pressed()[0]:
             m_pos_x,m_pos_y = pygame.mouse.get_pos()
-            tile_screen.get_sprite(m_pos_x,m_pos_y,'p')
+            tile_screen.get_sprite(m_pos_x,m_pos_y,'p',None)
         elif pygame.key.get_mods() & pygame.KMOD_LSHIFT and pygame.mouse.get_pressed()[2]:
             m_pos_x,m_pos_y = pygame.mouse.get_pos()
-            tile_screen.get_sprite(m_pos_x,m_pos_y,'e')
+            tile_screen.get_sprite(m_pos_x,m_pos_y,'e',None)
         elif pygame.mouse.get_pressed()[2]:
             Mouse = pygame.mouse.get_pos()
             tile_screen.delete_sprite(Mouse[0],Mouse[1])
