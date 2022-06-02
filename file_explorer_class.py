@@ -40,6 +40,7 @@ class File_Explorer():
         self.data = None
         self.first = True
         self.return_path = None
+        self.return_animation_set = None
         self.scroll_y = 0
         self.dir_len = 0
         self.text_size = 25
@@ -53,6 +54,17 @@ class File_Explorer():
         if self.path:
             self.data = {}
             self.load_dir(self.path,0)
+    
+    #Load animation dir
+    def load_animation_dir(self):
+        dir_path = fd.askdirectory()
+        if dir_path:
+            self.return_path = None
+            self.return_animation_set = []
+            for dir_contents in os.listdir(dir_path):
+                if '.png' in dir_contents:
+                    self.return_animation_set.append(os.path.join(dir_path,dir_contents))
+
 
     # loading directory to memory
     def load_dir(self,path,depth):
@@ -93,7 +105,9 @@ class File_Explorer():
         for i in self.data.values():
             if i.rect.collidepoint(rect[0]-self.rect.x,rect[1]-self.rect.y):
                 i.animate()
-                if pygame.mouse.get_pressed()[0]: self.return_path = i.file_path
+                if pygame.mouse.get_pressed()[0]:
+                    self.return_animation_set = None
+                    self.return_path = i.file_path
                 return
 
     # Reset function

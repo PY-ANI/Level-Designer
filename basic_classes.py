@@ -1,6 +1,7 @@
 # Basic class module for Preview class and Option class
 
 import pygame
+import time
 
 class preview():
     def __init__(self,x,y,size_x,size_y):
@@ -8,12 +9,32 @@ class preview():
         self.size_y = size_y
         self.image = pygame.Surface((size_x,size_y))
         self.rect = self.image.get_rect(topleft = (x,y))
+        self.frames = []
+        self.frame_count = 0
+        self.current_frame = 0
     
-    def draw(self,win,img_path):
-        win.blit(self.image,self.rect)
-        if img_path: 
-            win.blit(pygame.transform.scale(pygame.image.load(img_path).convert_alpha(),(self.size_x,self.size_y)),self.rect)
+    def change_data(self,data):
+        if type(data) == list:
+            self.frames = data
+        else:
+            self.frames.clear()
+            self.frames.append(data)
+        self.frame_count = self.frames.__len__()
+        self.last_time = time.time()
+        self.current_frame = int((time.time()-self.last_time)*self.frame_count)
 
+    def draw(self,win):
+        win.blit(self.image,self.rect)
+        if self.frame_count == 1: 
+            win.blit(pygame.transform.scale(pygame.image.load(self.frames[self.current_frame]).convert_alpha(),(self.size_x,self.size_y)),self.rect)
+        else:
+            if self.current_frame < self.frame_count-1:
+                self.current_frame = int((time.time()-self.last_time)*self.frame_count)
+            else:
+                self.last_time = time.time()
+                self.current_frame = int((time.time()-self.last_time)*self.frame_count)
+            
+            win.blit(pygame.transform.scale(pygame.image.load(self.frames[self.current_frame]).convert_alpha(),(self.size_x,self.size_y)),self.rect)
 
 class utility_tile():
     def __init__(self,name,x,y,size):
@@ -44,6 +65,7 @@ class utility_hud():
         self.utilities[1] = utility_tile("Load",10,35,25)
         self.utilities[2] = utility_tile("Save",10,55,25)
         self.utilities[3] = utility_tile("Config",10,75,25)
+        self.utilities[4] = utility_tile("animation",10,95,25)
 
     def draw(self,win):
         win.blit(self.image,self.rect)

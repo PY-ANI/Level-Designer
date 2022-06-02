@@ -9,6 +9,7 @@ from file_explorer_class import File_Explorer
 from designer_screen import screen
 import os
 
+# loading config data to global variables
 with open("config.json","rb") as f:
     data = json.load(f)
     width,height,tile_size = data["width"],data["height"],data["tile_size"]
@@ -21,7 +22,6 @@ pygame.display.set_caption("Level_Designer","Level_Designer")
 clock = pygame.time.Clock()
 
 # class initialisations
-
 tile_screen = screen(0,0,int(width*0.8),height,(200,200,200)) # Main tile screen class
 util_disp = utility_hud(int(width*0.8),0,int(width*0.2),int(height*0.25)) # Option menu class
 dir_display = File_Explorer(int(width*0.8),int(height*0.25),int(width*0.2),int(height*0.75),(50,50,50)) # Directory display class 
@@ -85,14 +85,21 @@ while not run:
                             os.system("notepad.exe config.json")
                         elif os_name == 'posix':
                             os.system("nano config.json")
-
+                    elif i == 4 and dir_display.path:
+                        dir_display.load_animation_dir()
+                        preview_display.change_data(dir_display.return_animation_set)
 
     # Key binding functions of tile screen
     Mouse = pygame.mouse.get_pos()
     if tile_screen.rect.collidepoint(Mouse):
-        if dir_display.return_path and pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed()[0]:
-            m_pos_x,m_pos_y = pygame.mouse.get_pos()
-            tile_screen.get_sprite(m_pos_x,m_pos_y,dir_display.return_path,dir_display.path)
+        if pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed()[0]:
+            if dir_display.return_animation_set:
+                m_pos_x,m_pos_y = pygame.mouse.get_pos()
+                tile_screen.get_sprite(m_pos_x,m_pos_y,dir_display.return_animation_set,dir_display.path)
+            elif dir_display.return_path:
+                m_pos_x,m_pos_y = pygame.mouse.get_pos()
+                tile_screen.get_sprite(m_pos_x,m_pos_y,dir_display.return_path,dir_display.path)
+            
         elif pygame.key.get_mods() & pygame.KMOD_LSHIFT and pygame.mouse.get_pressed()[0]:
             m_pos_x,m_pos_y = pygame.mouse.get_pos()
             tile_screen.get_sprite(m_pos_x,m_pos_y,'p',None)
@@ -114,7 +121,6 @@ while not run:
             else:
                 single_click = True
 
-        
         if event_1:
             if event_1[0].button == 4 and tile_screen.layer < 4:
                 tile_screen.layer += 1
@@ -124,14 +130,18 @@ while not run:
     mouse_scrl_x = m_x
     mouse_scrl_y = m_y
 
-
     win.fill((0,0,0))
 
     # Calling display funtions of classes
     tile_screen.draw(win)
     dir_display.draw(win)
     util_disp.draw(win)
-    preview_display.draw(win,dir_display.return_path)
+
+    if dir_display.return_path:
+        preview_display.change_data(dir_display.return_path)
+        preview_display.draw(win)
+    elif dir_display.return_animation_set:
+        preview_display.draw(win)
 
 
     pygame.display.update()
