@@ -93,8 +93,9 @@ class File_Explorer():
             self.image.fill((0,0,0))
             self.image.blit(pygame.font.SysFont("comicon",20).render("Click Here !!",True,(200,210,220)),(10,50))
         if self.data and self.first:
-            self.first = False
+            self.image.fill((0,0,0))
             self.draw_dir(self.data)
+            self.first = False
         elif self.rect.collidepoint(Mouse) and self.data:
             self.image.fill(self.color)
             self.draw_dir(self.data)

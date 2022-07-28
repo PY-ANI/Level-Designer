@@ -56,8 +56,8 @@ while not run:
             if not dir_display.path:
                 dir_display.get_dir()
 
-            if event_1[0].button == 4: dir_display.scroll_y = 20
-            elif event_1[0].button == 5: dir_display.scroll_y = -20
+            if event_1[0].button == 4: dir_display.scroll_y = 40
+            elif event_1[0].button == 5: dir_display.scroll_y = -40
 
         if util_disp.rect.collidepoint(event_1[0].pos) and event_1[0].button == 1:
             for i, val in util_disp.utilities.items():
@@ -91,11 +91,15 @@ while not run:
 
     # Key binding functions of tile screen
     Mouse = pygame.mouse.get_pos()
+    
     if tile_screen.rect.collidepoint(Mouse):
+        
         if pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed()[0]:
+            
             if dir_display.return_animation_set:
                 m_pos_x,m_pos_y = pygame.mouse.get_pos()
                 tile_screen.get_sprite(m_pos_x,m_pos_y,dir_display.return_animation_set,dir_display.path)
+            
             elif dir_display.return_path:
                 m_pos_x,m_pos_y = pygame.mouse.get_pos()
                 tile_screen.get_sprite(m_pos_x,m_pos_y,dir_display.return_path,dir_display.path)
@@ -103,9 +107,11 @@ while not run:
         elif pygame.key.get_mods() & pygame.KMOD_LSHIFT and pygame.mouse.get_pressed()[0]:
             m_pos_x,m_pos_y = pygame.mouse.get_pos()
             tile_screen.get_sprite(m_pos_x,m_pos_y,'p',None)
+        
         elif pygame.key.get_mods() & pygame.KMOD_LSHIFT and pygame.mouse.get_pressed()[2]:
             m_pos_x,m_pos_y = pygame.mouse.get_pos()
             tile_screen.get_sprite(m_pos_x,m_pos_y,'e',None)
+        
         elif pygame.mouse.get_pressed()[2]:
             Mouse = pygame.mouse.get_pos()
             tile_screen.delete_sprite(Mouse[0],Mouse[1])

@@ -21,20 +21,15 @@ class preview():
             self.frames.append(data)
         self.frame_count = self.frames.__len__()
         self.last_time = time.time()
-        self.current_frame = int((time.time()-self.last_time)*self.frame_count)
+        self.current_frame = int((time.time()-self.last_time)%self.frame_count)
 
     def draw(self,win):
         win.blit(self.image,self.rect)
-        if self.frame_count == 1: 
-            win.blit(pygame.transform.scale(pygame.image.load(self.frames[self.current_frame]).convert_alpha(),(self.size_x,self.size_y)),self.rect)
-        else:
-            if self.current_frame < self.frame_count-1:
-                self.current_frame = int((time.time()-self.last_time)*self.frame_count)
-            else:
-                self.last_time = time.time()
-                self.current_frame = int((time.time()-self.last_time)*self.frame_count)
-            
-            win.blit(pygame.transform.scale(pygame.image.load(self.frames[self.current_frame]).convert_alpha(),(self.size_x,self.size_y)),self.rect)
+
+        win.blit(pygame.transform.scale(pygame.image.load(self.frames[self.current_frame]).convert_alpha(),(self.size_x,self.size_y)),self.rect)
+
+        self.current_frame = time.time()-self.last_time
+        if self.current_frame >= 60: self.last_time = time()
 
 class utility_tile():
     def __init__(self,name,x,y,size):
