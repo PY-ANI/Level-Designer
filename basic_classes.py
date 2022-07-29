@@ -21,20 +21,20 @@ class preview():
             self.frames.append(data)
         self.frame_count = self.frames.__len__()
         self.last_time = time.time()
-        self.current_frame = int((time.time()-self.last_time)%self.frame_count)
+        self.current_frame = time.time()-self.last_time
 
     def draw(self,win):
         win.blit(self.image,self.rect)
 
-        win.blit(pygame.transform.scale(pygame.image.load(self.frames[self.current_frame]).convert_alpha(),(self.size_x,self.size_y)),self.rect)
+        win.blit(pygame.transform.scale(pygame.image.load(self.frames[int(self.current_frame*5)%self.frame_count]).convert_alpha(),(self.size_x,self.size_y)),self.rect)
 
         self.current_frame = time.time()-self.last_time
-        if self.current_frame >= 60: self.last_time = time()
+        if self.current_frame >= 60: self.last_time = time.time()
 
 class utility_tile():
     def __init__(self,name,x,y,size):
         self.name = name
-        self.size = size
+        self.size = size 
         self.animate = False
         self.image_1 = pygame.font.SysFont("comicon",self.size,True).render(self.name,True,(180,180,180))
         self.image_2 = pygame.font.SysFont("comicon",self.size,True).render(self.name,True,(120,240,120))

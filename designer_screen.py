@@ -111,6 +111,8 @@ class screen():
                 for x, val_2 in val_1.items():
                     if val_2 == 'p' or val_2 == 'e':
                         self.sprites[int(lyr)][int(y)][int(x)] = character_tile(int(x)*self.sprite_size,int(y)*self.sprite_size,self.sprite_size,val_2)
+                    elif type(val_2) == list:
+                        self.sprites[int(lyr)][int(y)][int(x)] = animated_tile(int(x)*self.sprite_size,int(y)*self.sprite_size,self.sprite_size,[self.save_data_path+i for i in val_2])
                     else:
                         self.sprites[int(lyr)][int(y)][int(x)] = sprite_tile(int(x)*self.sprite_size,int(y)*self.sprite_size,self.sprite_size,self.save_data_path+val_2)
 
