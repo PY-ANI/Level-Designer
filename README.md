@@ -1,2 +1,3 @@
 # Level-Designer
-A level designer purely in python using pygame.
+A sprite map designer in python using pygame.
+
