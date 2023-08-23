@@ -2,7 +2,7 @@ from json import dump, load
 from os import listdir, path, mkdir
 from shutil import copy
 from tkinter.filedialog import askopenfilenames, askdirectory, asksaveasfile, askopenfile
-from tkinter.messagebox import askyesno
+from tkinter.messagebox import askyesno, showinfo
 
 class workspace():
     def __init__(self) -> None:
@@ -14,6 +14,7 @@ class workspace():
         self.is_updated = False
 
         self.cached_sprites = {}
+        self.sprite_size = (40,40)
 
         self.json_template = {
             'sprite_keys':[],
@@ -62,20 +63,6 @@ class workspace():
                 self.json_template['sprite_keys'].append(sprite)
 
                 self.is_updated = True
-    
-    def export_map(self):
-        file = asksaveasfile('w',confirmoverwrite=True,defaultextension='.json',filetypes=[('JSON','.json')],title='Save As',initialfile='Map_data')
-        if file:
-            dump(self.json_template,file)
-
-    def import_map(self):
-        file = askopenfile('r',defaultextension='.json',filetypes=[('JSON','.json')],title='Open File')
-        if file:
-            self.json_template = load(file)
-            self.json_template['map'] = self.jsondict_to_dict(self.json_template['map'])
-            self.is_updated = True
-
-            return True
         
     def jsondict_to_dict(self,dt):
         rt_dict = {}
@@ -85,3 +72,27 @@ class workspace():
                 rt_dict[int(y)][int(x)] = sp
 
         return rt_dict
+    
+    def vailidate_resources(self,resource_arr):
+        for resource in resource_arr:
+            if not path.exists(path.join(self.sprite_dir,resource)):
+                showinfo(message=f"Resource not found at :\n /{self.sprite_dir}")
+                return False
+        return True
+
+    def export_map(self):
+        if not self.working_dir: return False
+        file = asksaveasfile('w',confirmoverwrite=True,defaultextension='.json',filetypes=[('JSON','.json')],title='Save As',initialfile='Map_data')
+        if file:
+            dump(self.json_template,file)
+
+    def import_map(self):
+        if not self.working_dir: return False
+        file = askopenfile('r',defaultextension='.json',filetypes=[('JSON','.json')],title='Open File')
+        if file:
+            data = load(file)
+            if self.vailidate_resources(data['sprite_keys']):
+                self.json_template['map'] = self.jsondict_to_dict(data['map'])
+                self.is_updated = True
+
+                return True

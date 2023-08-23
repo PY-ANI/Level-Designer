@@ -32,7 +32,8 @@ class preview(pygame.Surface):
         self.convert_alpha()
 
     def set_preview_image(self, image):
-        self.preview_image = pygame.transform.scale(image,self.preview_image_dimension)
+        if image: self.preview_image = pygame.transform.scale(image,self.preview_image_dimension)
+        else: self.preview_image = image
 
     def draw(self):
         self.fill((50,50,50))
@@ -126,7 +127,6 @@ class creative_section(pygame.Surface):
     def remove_from_map(self,pos_key):
         if row:=self.dict_buffer.get(pos_key[1]):
             if row.get(pos_key[0]): del self.dict_buffer[pos_key[1]][pos_key[0]]
-
 
     def draw(self):
         self.master.blit(self,self.rect)

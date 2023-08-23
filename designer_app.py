@@ -17,7 +17,7 @@ class Designer_App(pygame.Surface):
 
         #data
         self.selected_sprite = None
-        self.sprite_size = (40,40)
+        self.sprite_size = None
 
         #flags/events
         self.mouse_pressed = None
@@ -61,6 +61,8 @@ class Designer_App(pygame.Surface):
         self.creative_screen.sprite_path = self.workspace.sprite_dir
         self.creative_screen.cached_sprites = self.workspace.cached_sprites
         self.creative_screen.sprite_keys = self.workspace.json_template['sprite_keys']
+        self.creative_screen.sprite_size = self.workspace.sprite_size
+        self.tool_screen.preview_section.set_preview_image(None)
         self.start = 3
 
     def draw(self):
@@ -97,7 +99,6 @@ class Designer_App(pygame.Surface):
                     if self.mouse_clicked and self.mouse_clicked[0].button == 1:
                         if btn.command():
                             self.bind_values()
-                            # self.start = 3
                 else:
                     btn.set_alpha(80)
                 btn.draw()
