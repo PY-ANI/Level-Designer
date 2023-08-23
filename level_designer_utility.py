@@ -92,7 +92,7 @@ class tool_section(pygame.Surface):
         self.fill((70,70,70))
 
 class creative_section(pygame.Surface):
-    def __init__(self,win,width:int,height:int,pos:tuple[int ,int]):
+    def __init__(self,win,width:int,height:int,pos:tuple[int ,int],sprite_size):
         super().__init__((width,height))
 
         self.master = win
@@ -101,7 +101,7 @@ class creative_section(pygame.Surface):
         self.font_kernel = pygame.font.SysFont("comicsans", 14)
 
         self.user_mode = 1
-        self.sprite_size = (40,40)
+        self.sprite_size = sprite_size
         self.sprite_count = (self.rect.w//self.sprite_size[0]+1 ,self.rect.h//self.sprite_size[1]+1)
         self.mode_dict = {
             0:"VIEW MODE",

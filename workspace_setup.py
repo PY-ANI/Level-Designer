@@ -5,7 +5,7 @@ from tkinter.filedialog import askopenfilenames, askdirectory, asksaveasfile, as
 from tkinter.messagebox import askyesno, showinfo
 
 class workspace():
-    def __init__(self) -> None:
+    def __init__(self,sprite_size) -> None:
 
         self.sprite_dir = 'sprites'
         self.working_dir = None
@@ -14,7 +14,7 @@ class workspace():
         self.is_updated = False
 
         self.cached_sprites = {}
-        self.sprite_size = (40,40)
+        self.sprite_size = sprite_size
 
         self.json_template = {
             'sprite_keys':[],

@@ -8,16 +8,9 @@ class Designer_App(pygame.Surface):
         self.master = win
         self.rect = pygame.Rect(0,0,width,height)
 
-        #screens
-        self.creative_screen = creative_section(self,1000,self.rect.height,(0,0))
-        self.tool_screen = tool_section(self,200,self.rect.height,(1000,0))
-
-        #workspace
-        self.workspace = workspace()
-
         #data
         self.selected_sprite = None
-        self.sprite_size = None
+        self.sprite_size = (40,40)
 
         #flags/events
         self.mouse_pressed = None
@@ -29,6 +22,13 @@ class Designer_App(pygame.Surface):
         self.start = 3
         self.initial_mouse_pos = None
         self.prev_pos = None
+
+        #screens
+        self.creative_screen = creative_section(self,1000,self.rect.height,(0,0),self.sprite_size)
+        self.tool_screen = tool_section(self,200,self.rect.height,(1000,0))
+
+        #workspace
+        self.workspace = workspace(self.sprite_size)
 
         pygame.mouse.set_cursor(pygame.cursors.broken_x)
         self.add_command_to_btn()
@@ -61,7 +61,7 @@ class Designer_App(pygame.Surface):
         self.creative_screen.sprite_path = self.workspace.sprite_dir
         self.creative_screen.cached_sprites = self.workspace.cached_sprites
         self.creative_screen.sprite_keys = self.workspace.json_template['sprite_keys']
-        self.creative_screen.sprite_size = self.workspace.sprite_size
+        self.creative_screen.sprite_size = self.workspace.sprite_size = self.sprite_size
         self.tool_screen.preview_section.set_preview_image(None)
         self.start = 3
 
