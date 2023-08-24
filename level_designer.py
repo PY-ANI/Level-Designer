@@ -21,6 +21,6 @@ if __name__ == "__main__":
 
         app.draw()
 
-        pygame.display.flip()
+        pygame.display.update()
 
     pygame.quit()

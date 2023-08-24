@@ -3,6 +3,7 @@ from os import listdir, path, mkdir
 from shutil import copy
 from tkinter.filedialog import askopenfilenames, askdirectory, asksaveasfile, askopenfile
 from tkinter.messagebox import askyesno, showinfo
+# from tkinter.
 
 class workspace():
     def __init__(self,sprite_size) -> None:

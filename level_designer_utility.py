@@ -52,10 +52,10 @@ class btn(pygame.Surface):
 
         match text_align:
             case 'left':
-                self.text_rect.left = self.rect.left+ipadx
+                self.text_rect.left += ipadx
             case 'right':
-                self.text_rect.right = self.rect.right-ipadx
-            case _: self.text_rect.centerx = self.rect.centerx
+                self.text_rect.right -= ipadx
+            case _: self.text_rect.centerx = self.rect.centerx-self.rect.x
 
         self.set_alpha(80)
         self.convert_alpha()
@@ -73,10 +73,12 @@ class tool_section(pygame.Surface):
         self.rect = self.get_rect(topleft=pos)
 
         self.buttons = [
-            btn(self,196,30,(2,2),'NEW','left',ipadx=8),
-            btn(self,196,30,(2,34),'EXPORT','left',ipadx=8),
-            btn(self,196,30,(2,66),'IMPORT','left',ipadx=8),
-            btn(self,196,30,(2,98),'LOAD','left',ipadx=8),
+            btn(self,100,30,(2,2),'NEW','left',ipadx=6),
+            btn(self,100,30,(2,34),'EXPORT','left',ipadx=6),
+            btn(self,100,30,(2,66),'IMPORT','left',ipadx=6),
+            btn(self,100,30,(2,98),'LOAD','left',ipadx=6),
+            # btn(self,100,30,(104,2),'AS','left',ipadx=6),
+            # btn(self,100,30,(104,34),'AS','left',ipadx=6),
         ]
 
         self.navigation_section = sprite_navigator(self,196,400,(2,236))
@@ -120,7 +122,7 @@ class creative_section(pygame.Surface):
 
     def add_to_map(self,sprite_key,pos):
         pos_key = pos-self.shift_offset
-        pos_key = pos_key[0]//self.sprite_size[0],pos_key[1]//self.sprite_size[1]
+        pos_key = int(pos_key[0]//self.sprite_size[0]),int(pos_key[1]//self.sprite_size[1])
         if self.dict_buffer.get(pos_key[1]) == None:
             self.dict_buffer[pos_key[1]] = {pos_key[0]:sprite_key}
         else:
@@ -128,7 +130,7 @@ class creative_section(pygame.Surface):
 
     def remove_from_map(self,pos):
         pos_key = pos-self.shift_offset
-        pos_key = pos_key[0]//self.sprite_size[0],pos_key[1]//self.sprite_size[1]
+        pos_key = int(pos_key[0]//self.sprite_size[0]),int(pos_key[1]//self.sprite_size[1])
         if row:=self.dict_buffer.get(pos_key[1]):
             if row.get(pos_key[0]): del self.dict_buffer[pos_key[1]][pos_key[0]]
 
@@ -147,3 +149,4 @@ class creative_section(pygame.Surface):
         
         self.blit(self.font_kernel.render(f"{self.shift_offset.xy}", True, (0,0,0)),(4,4))
         self.blit(self.font_kernel.render(f"{self.mode_dict[self.user_mode]}", True, (0,0,0)),(self.rect.centerx,4))
+
